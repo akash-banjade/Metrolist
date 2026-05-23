@@ -261,13 +261,13 @@ class HomeViewModel @Inject constructor(
             ),
         )
         (isBeforeCutoff && !completed) || showPref
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val wrappedCardIsResume: StateFlow<Boolean> = context.dataStore.data.map { prefs ->
         val seen = prefs[WrappedSeenKey] ?: false
         val completed = prefs[WrappedCompletedKey] ?: false
         seen && !completed
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun togglePin(item: YTItem) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -590,11 +590,13 @@ class HomeViewModel @Inject constructor(
     private val _isLoadingMore = MutableStateFlow(false)
     fun loadMoreYouTubeItems(continuation: String?) {
         if (continuation == null || _isLoadingMore.value) return
-        val hideExplicit = context.dataStore.get(HideExplicitKey, false)
-        val hideVideoSongs = context.dataStore.get(HideVideoSongsKey, false)
-        val hideYoutubeShorts = context.dataStore.get(HideYoutubeShortsKey, false)
 
         viewModelScope.launch(Dispatchers.IO) {
+            val prefs = context.dataStore.data.first()
+            val hideExplicit = prefs[HideExplicitKey] ?: false
+            val hideVideoSongs = prefs[HideVideoSongsKey] ?: false
+            val hideYoutubeShorts = prefs[HideYoutubeShortsKey] ?: false
+
             _isLoadingMore.value = true
             val nextSections = YouTube.home(continuation).getOrNull() ?: run {
                 _isLoadingMore.value = false

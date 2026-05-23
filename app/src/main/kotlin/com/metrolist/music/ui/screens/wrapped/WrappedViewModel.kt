@@ -15,6 +15,7 @@ import com.metrolist.music.utils.YTPlayerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -37,27 +38,33 @@ class WrappedViewModel @Inject constructor(
     private val _state = MutableStateFlow(WrappedState())
     val state = _state.asStateFlow()
 
+    private var audioPrepareJob: Job? = null
+
     private fun buildPageTrackMap(uniqueToMedia: Map<Int, Int>): Map<Int, Int> {
-        val fallback = uniqueToMedia.values.firstOrNull() ?: 0
-        fun idx(uniqueIndex: Int): Int = uniqueToMedia[uniqueIndex] ?: fallback
+        fun idx(uniqueIndex: Int): Int? = uniqueToMedia[uniqueIndex]
         return buildMap {
-            put(0, idx(0))
-            put(1, idx(1)); put(2, idx(1)); put(3, idx(1))
-            put(4, idx(2)); put(5, idx(2))
-            put(6, idx(3)); put(7, idx(3))
-            put(8, idx(4))
-            put(9, idx(5)); put(10, idx(5)); put(11, idx(5))
-            put(12, idx(6)); put(13, idx(6)); put(14, idx(6))
-            put(15, idx(7)); put(16, idx(7)); put(17, idx(7))
-            put(18, idx(8))
+            listOf(
+                0 to idx(0),
+                1 to idx(1), 2 to idx(1), 3 to idx(1),
+                4 to idx(2), 5 to idx(2),
+                6 to idx(3), 7 to idx(3),
+                8 to idx(4),
+                9 to idx(5), 10 to idx(5), 11 to idx(5),
+                12 to idx(6), 13 to idx(6), 14 to idx(6),
+                15 to idx(7), 16 to idx(7), 17 to idx(7),
+                18 to idx(8),
+            ).forEach { (page, track) ->
+                if (track != null) put(page, track)
+            }
         }
     }
 
     fun prepare(fromTimeStamp: Long, toTimeStamp: Long) {
         if (_state.value.isDataReady || _state.value.isLoading) return
+        audioPrepareJob?.cancel()
         _state.update { it.copy(isLoading = true) }
 
-        viewModelScope.launch {
+        audioPrepareJob = viewModelScope.launch {
             try {
                 val topSongsDeferred = async(Dispatchers.IO) { databaseDao.mostPlayedSongsStats(fromTimeStamp, limit = 30, toTimeStamp = toTimeStamp).first() }
                 val topArtistsDeferred = async(Dispatchers.IO) { databaseDao.mostPlayedArtists(fromTimeStamp, limit = 5, toTimeStamp = toTimeStamp).first() }
@@ -178,6 +185,7 @@ class WrappedViewModel @Inject constructor(
         var failedTracks = 0
 
         for ((i, song) in uniqueSongs.withIndex()) {
+            if (audioPrepareJob?.isActive == false) return
             var success = false
             repeat(MAX_AUDIO_RETRIES) { attempt ->
                 try {
@@ -208,6 +216,8 @@ class WrappedViewModel @Inject constructor(
             }
             _state.update { it.copy(audioLoadingProgress = i + 1) }
         }
+
+        if (audioPrepareJob?.isActive == false) return
 
         _state.update { it.copy(isAudioLoading = false) }
 
@@ -246,6 +256,7 @@ class WrappedViewModel @Inject constructor(
     fun retryAudio() {
         val s = _state.value
         if (s.topSongs.isNotEmpty()) {
+            audioPrepareJob?.cancel()
             _state.update {
                 it.copy(
                     audioLoadingProgress = 0,
@@ -255,11 +266,12 @@ class WrappedViewModel @Inject constructor(
                     audioErrorMessage = null,
                 )
             }
-            viewModelScope.launch { prepareAudio(s.topSongs, s.topArtists, s.topAlbums) }
+            audioPrepareJob = viewModelScope.launch { prepareAudio(s.topSongs, s.topArtists, s.topAlbums) }
         }
     }
 
     fun skipAudio() {
+        audioPrepareJob?.cancel()
         _state.update { it.copy(isAudioReady = true, isAudioLoading = false) }
     }
 

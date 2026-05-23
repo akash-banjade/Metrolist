@@ -81,6 +81,11 @@ fun WrappedScreen(
         }
     }
 
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { 19 },
+    )
+
     val window = (context as? Activity)?.window
 
     DisposableEffect(window) {
@@ -186,11 +191,6 @@ fun WrappedScreen(
         }
 
         state.isDataReady && state.isAudioReady -> {
-            val pagerState = rememberPagerState(
-                initialPage = 0,
-                pageCount = { 19 },
-            )
-
             LaunchedEffect(Unit) {
                 val currentPrefs = context.dataStore.data.first()
                 val wasSeen = currentPrefs[WrappedSeenKey] ?: false

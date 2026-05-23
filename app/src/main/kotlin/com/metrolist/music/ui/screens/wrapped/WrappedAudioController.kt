@@ -77,7 +77,8 @@ class WrappedAudioController @Inject constructor(
     }
 
     fun seekToPage(pageIndex: Int) {
-        val trackIndex = pageTrackMap[pageIndex] ?: 0
+        if (player == null || player?.mediaItemCount == 0) return
+        val trackIndex = pageTrackMap[pageIndex] ?: return
         seekToTrack(trackIndex)
     }
 
@@ -100,10 +101,12 @@ class WrappedAudioController @Inject constructor(
     }
 
     fun pause() {
+        abandonAudioFocus()
         player?.pause()
     }
 
     fun resume() {
+        requestAudioFocus()
         player?.playWhenReady = true
     }
 
