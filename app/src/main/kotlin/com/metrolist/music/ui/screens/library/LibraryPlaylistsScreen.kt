@@ -458,6 +458,7 @@ fun LibraryPlaylistsScreen(
                             )
                         } else {
                             LibraryPlaylistListItem(
+                                navController = navController,
                                 menuState = menuState,
                                 coroutineScope = coroutineScope,
                                 playlist = item.playlist,
@@ -529,6 +530,7 @@ fun LibraryPlaylistsScreen(
                             )
                         } else {
                             LibraryPlaylistGridItem(
+                                navController = navController,
                                 menuState = menuState,
                                 coroutineScope = coroutineScope,
                                 playlist = item.playlist,

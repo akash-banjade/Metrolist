@@ -615,6 +615,7 @@ fun AutoPlaylistScreen(
                                             menuState.show {
                                                 SongMenu(
                                                     originalSong = song,
+                                                    navController = navController,
                                                     onDismiss = menuState::dismiss,
                                                 )
                                             }
@@ -927,7 +928,7 @@ private fun AutoPlaylistHeader(
                 buildString {
                     append(pluralStringResource(R.plurals.n_song, songs.size, songs.size))
                     if (likeLength > 0) {
-                        append(" ")
+                        append(" • ")
                         append(makeTimeString(likeLength * 1000L))
                     }
                 },

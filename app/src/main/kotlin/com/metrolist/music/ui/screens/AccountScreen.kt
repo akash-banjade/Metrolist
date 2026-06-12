@@ -164,6 +164,7 @@ fun AccountScreen(
                                         menuState.show {
                                             YouTubeAlbumMenu(
                                                 albumItem = item,
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }

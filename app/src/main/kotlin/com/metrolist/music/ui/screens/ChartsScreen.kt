@@ -273,6 +273,7 @@ fun ChartsScreen(
                                                         menuState.show {
                                                             YouTubeSongMenu(
                                                                 song = song,
+                                                                navController = navController,
                                                                 onDismiss = menuState::dismiss,
                                                             )
                                                         }
@@ -305,6 +306,7 @@ fun ChartsScreen(
                                                             menuState.show {
                                                                 YouTubeSongMenu(
                                                                     song = song,
+                                                                    navController = navController,
                                                                     onDismiss = menuState::dismiss,
                                                                 )
                                                             }
@@ -361,6 +363,7 @@ fun ChartsScreen(
                                                         menuState.show {
                                                             YouTubeSongMenu(
                                                                 song = video,
+                                                                navController = navController,
                                                                 onDismiss = menuState::dismiss,
                                                             )
                                                         }

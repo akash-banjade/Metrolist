@@ -39,7 +39,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.metrolist.music.LocalNavController
+import androidx.navigation.NavController
 import com.metrolist.music.R
 import com.metrolist.music.ui.screens.wrapped.pages.ConclusionPage
 import com.metrolist.music.ui.screens.wrapped.pages.PlaylistPage
@@ -89,20 +89,18 @@ sealed class WrappedScreenType {
 }
 
 @Composable
-fun WrappedScreen() {
-    val navController = LocalNavController.current
+fun WrappedScreen(navController: NavController) {
     val context = LocalContext.current
     val manager = remember { provideWrappedManager(context) }
 
     CompositionLocalProvider(LocalWrappedManager provides manager) {
-        WrappedScreenContent()
+        WrappedScreenContent(navController = navController)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun WrappedScreenContent() {
-    val navController = LocalNavController.current
+fun WrappedScreenContent(navController: NavController) {
     val onClose: () -> Unit = {
         navController.previousBackStackEntry?.savedStateHandle?.set("wrapped_seen", true)
         navController.popBackStack()

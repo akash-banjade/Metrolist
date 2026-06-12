@@ -139,6 +139,7 @@ fun ArtistItemsScreen(
                                         is SongItem -> {
                                             YouTubeSongMenu(
                                                 song = item,
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }
@@ -146,6 +147,7 @@ fun ArtistItemsScreen(
                                         is AlbumItem -> {
                                             YouTubeAlbumMenu(
                                                 albumItem = item,
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }
@@ -176,6 +178,7 @@ fun ArtistItemsScreen(
                                         is EpisodeItem -> {
                                             YouTubeSongMenu(
                                                 song = item.asSongItem(),
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }
@@ -317,6 +320,7 @@ fun ArtistItemsScreen(
                                             is SongItem -> {
                                                 YouTubeSongMenu(
                                                     song = item,
+                                                    navController = navController,
                                                     onDismiss = menuState::dismiss,
                                                 )
                                             }
@@ -324,6 +328,7 @@ fun ArtistItemsScreen(
                                             is AlbumItem -> {
                                                 YouTubeAlbumMenu(
                                                     albumItem = item,
+                                                    navController = navController,
                                                     onDismiss = menuState::dismiss,
                                                 )
                                             }
@@ -354,6 +359,7 @@ fun ArtistItemsScreen(
                                             is EpisodeItem -> {
                                                 YouTubeSongMenu(
                                                     song = item.asSongItem(),
+                                                    navController = navController,
                                                     onDismiss = menuState::dismiss,
                                                 )
                                             }

@@ -148,6 +148,7 @@ fun YouTubeBrowseScreen(
                                         is SongItem -> {
                                             YouTubeSongMenu(
                                                 song = item,
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }
@@ -155,6 +156,7 @@ fun YouTubeBrowseScreen(
                                         is AlbumItem -> {
                                             YouTubeAlbumMenu(
                                                 albumItem = item,
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }
@@ -185,6 +187,7 @@ fun YouTubeBrowseScreen(
                                         is EpisodeItem -> {
                                             YouTubeSongMenu(
                                                 song = item.asSongItem(),
+                                                navController = navController,
                                                 onDismiss = menuState::dismiss,
                                             )
                                         }

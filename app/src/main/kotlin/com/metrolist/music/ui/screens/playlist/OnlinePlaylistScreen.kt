@@ -82,7 +82,6 @@ import com.metrolist.innertube.models.PlaylistItem
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalListenTogetherManager
-import com.metrolist.music.LocalNavController
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.LocalSyncUtils
@@ -253,6 +252,7 @@ fun OnlinePlaylistScreen(
                                 playlist = playlist,
                                 songs = songs,
                                 dbPlaylist = dbPlaylist,
+                                navController = navController,
                                 coroutineScope = coroutineScope,
                                 continuation = viewModel.continuation,
                                 isPodcastPlaylist = isPodcastPlaylist,
@@ -332,7 +332,7 @@ fun OnlinePlaylistScreen(
                                 } else {
                                     IconButton(onClick = {
                                         menuState.show {
-                                            YouTubeSongMenu(songItem, menuState::dismiss)
+                                            YouTubeSongMenu(songItem, navController, menuState::dismiss)
                                         }
                                     }) {
                                         Icon(painterResource(R.drawable.more_vert), null)
@@ -486,12 +486,12 @@ private fun OnlinePlaylistHeader(
     playlist: PlaylistItem,
     songs: List<SongItem>,
     dbPlaylist: Playlist?,
+    navController: NavController,
     coroutineScope: CoroutineScope,
     continuation: String?,
     isPodcastPlaylist: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
-    val navController = LocalNavController.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val listenTogetherManager = LocalListenTogetherManager.current
     val isListenTogetherGuest = listenTogetherManager?.let { it.isInRoom && !it.isHost } ?: false
@@ -586,7 +586,7 @@ private fun OnlinePlaylistHeader(
         val metadataText = buildString {
             append(nSongs)
             if (durationText != null) {
-                append(" ")
+                append(" • ")
                 append(durationText)
             }
         }

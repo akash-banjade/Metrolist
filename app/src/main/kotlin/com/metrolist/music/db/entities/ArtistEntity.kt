@@ -28,9 +28,7 @@ data class ArtistEntity(
     @ColumnInfo(name = "isLocal", defaultValue = false.toString())
     val isLocal: Boolean = false,
     @ColumnInfo(name = "isPodcastChannel", defaultValue = false.toString())
-    val isPodcastChannel: Boolean = false,
-    @ColumnInfo(name = "cachedPageJson")
-    val cachedPageJson: String? = null
+    val isPodcastChannel: Boolean = false
 ) {
     val isYouTubeArtist: Boolean
         get() = id.startsWith("UC") || id.startsWith("FEmusic_library_privately_owned_artist")

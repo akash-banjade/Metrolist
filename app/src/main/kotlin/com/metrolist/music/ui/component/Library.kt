@@ -13,8 +13,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
 import com.metrolist.innertube.models.PlaylistItem
-import com.metrolist.music.LocalNavController
 import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.music.R
 import com.metrolist.music.db.entities.Album
@@ -28,81 +28,76 @@ import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun LibraryArtistListItem(
+    navController: NavController,
     menuState: MenuState,
     coroutineScope: CoroutineScope,
     artist: Artist,
     modifier: Modifier = Modifier
-) {
-    val navController = LocalNavController.current
-    ArtistListItem(
-        artist = artist,
-        trailingContent = {
-            androidx.compose.material3.IconButton(
-                onClick = {
-                    menuState.show {
-                        ArtistMenu(
-                            originalArtist = artist,
-                            coroutineScope = coroutineScope,
-                            onDismiss = menuState::dismiss
-                        )
-                    }
+) = ArtistListItem(
+    artist = artist,
+    trailingContent = {
+        androidx.compose.material3.IconButton(
+            onClick = {
+                menuState.show {
+                    ArtistMenu(
+                        originalArtist = artist,
+                        coroutineScope = coroutineScope,
+                        onDismiss = menuState::dismiss
+                    )
                 }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.more_vert),
-                    contentDescription = null
-                )
             }
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable {
-                navController.navigate("artist/${artist.id}")
-            }
-    )
-}
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.more_vert),
+                contentDescription = null
+            )
+        }
+    },
+    modifier = modifier
+        .fillMaxWidth()
+        .clickable {
+            navController.navigate("artist/${artist.id}")
+        }
+)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryArtistGridItem(
+    navController: NavController,
     menuState: MenuState,
     coroutineScope: CoroutineScope,
     artist: Artist,
     modifier: Modifier = Modifier
-) {
-    val navController = LocalNavController.current
-    ArtistGridItem(
-        artist = artist,
-        fillMaxWidth = true,
-        modifier = modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = {
-                    navController.navigate("artist/${artist.id}")
-                },
-                onLongClick = {
-                    menuState.show {
-                        ArtistMenu(
-                            originalArtist = artist,
-                            coroutineScope = coroutineScope,
-                            onDismiss = menuState::dismiss
-                        )
+) = ArtistGridItem(
+    artist = artist,
+    fillMaxWidth = true,
+    modifier = modifier
+        .fillMaxWidth()
+        .combinedClickable(
+            onClick = {
+                navController.navigate("artist/${artist.id}")
+            },
+            onLongClick = {
+                menuState.show {
+                    ArtistMenu(
+                        originalArtist = artist,
+                        coroutineScope = coroutineScope,
+                        onDismiss = menuState::dismiss
+                    )
                 }
             }
         )
 )
-}
 
 @Composable
 fun LibraryAlbumListItem(
     modifier: Modifier = Modifier,
+    navController: NavController,
     menuState: MenuState,
     album: Album,
     isActive: Boolean = false,
     isPlaying: Boolean = false
-) {
-    val navController = LocalNavController.current
-    AlbumListItem(
+) = AlbumListItem(
     album = album,
     isActive = isActive,
     isPlaying = isPlaying,
@@ -112,6 +107,7 @@ fun LibraryAlbumListItem(
                 menuState.show {
                     AlbumMenu(
                         originalAlbum = album,
+                        navController = navController,
                         onDismiss = menuState::dismiss
                     )
                 }
@@ -129,20 +125,18 @@ fun LibraryAlbumListItem(
             navController.navigate("album/${album.id}")
         }
 )
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryAlbumGridItem(
     modifier: Modifier = Modifier,
+    navController: NavController,
     menuState: MenuState,
     coroutineScope: CoroutineScope,
     album: Album,
     isActive: Boolean = false,
     isPlaying: Boolean = false
-) {
-    val navController = LocalNavController.current
-    AlbumGridItem(
+) = AlbumGridItem(
     album = album,
     isActive = isActive,
     isPlaying = isPlaying,
@@ -158,23 +152,22 @@ fun LibraryAlbumGridItem(
                 menuState.show {
                     AlbumMenu(
                         originalAlbum = album,
+                        navController = navController,
                         onDismiss = menuState::dismiss
                     )
                 }
             }
         )
 )
-}
 
 @Composable
 fun LibraryPlaylistListItem(
+    navController: NavController,
     menuState: MenuState,
     coroutineScope: CoroutineScope,
     playlist: Playlist,
     modifier: Modifier = Modifier
-) {
-    val navController = LocalNavController.current
-    PlaylistListItem(
+) = PlaylistListItem(
     playlist = playlist,
     trailingContent = {
         androidx.compose.material3.IconButton(
@@ -232,18 +225,16 @@ fun LibraryPlaylistListItem(
                 navController.navigate("local_playlist/${playlist.id}")
         }
 )
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryPlaylistGridItem(
+    navController: NavController,
     menuState: MenuState,
     coroutineScope: CoroutineScope,
     playlist: Playlist,
     modifier: Modifier = Modifier
-) {
-    val navController = LocalNavController.current
-    PlaylistGridItem(
+) = PlaylistGridItem(
     playlist = playlist,
     fillMaxWidth = true,
     modifier = modifier
@@ -295,4 +286,3 @@ fun LibraryPlaylistGridItem(
             }
         )
 )
-}

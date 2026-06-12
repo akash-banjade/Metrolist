@@ -276,6 +276,7 @@ fun LibraryArtistsScreen(
                             contentType = { CONTENT_TYPE_ARTIST },
                         ) { artist ->
                             LibraryArtistListItem(
+                                navController = navController,
                                 menuState = menuState,
                                 coroutineScope = coroutineScope,
                                 modifier = Modifier.animateItem(),
@@ -335,6 +336,7 @@ fun LibraryArtistsScreen(
                             contentType = { CONTENT_TYPE_ARTIST },
                         ) { artist ->
                             LibraryArtistGridItem(
+                                navController = navController,
                                 menuState = menuState,
                                 coroutineScope = coroutineScope,
                                 modifier = Modifier.animateItem(),

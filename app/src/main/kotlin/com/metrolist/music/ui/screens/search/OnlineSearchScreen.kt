@@ -53,7 +53,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.metrolist.music.LocalNavController
+import androidx.navigation.NavController
 import com.metrolist.innertube.models.AlbumItem
 import com.metrolist.innertube.models.ArtistItem
 import com.metrolist.innertube.models.EpisodeItem
@@ -87,12 +87,12 @@ import kotlinx.coroutines.flow.drop
 fun OnlineSearchScreen(
     query: String,
     onQueryChange: (TextFieldValue) -> Unit,
+    navController: NavController,
     onSearch: (String) -> Unit,
     onDismiss: () -> Unit,
     pureBlack: Boolean,
     viewModel: OnlineSearchSuggestionViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavController.current
     val database = LocalDatabase.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val menuState = LocalMenuState.current
@@ -169,6 +169,7 @@ fun OnlineSearchScreen(
                                         is SongItem -> {
                                             YouTubeSongMenu(
                                                 song = item,
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()
@@ -179,6 +180,7 @@ fun OnlineSearchScreen(
                                         is AlbumItem -> {
                                             YouTubeAlbumMenu(
                                                 albumItem = item,
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()
@@ -221,6 +223,7 @@ fun OnlineSearchScreen(
                                         is EpisodeItem -> {
                                             YouTubeSongMenu(
                                                 song = item.asSongItem(),
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()
@@ -299,6 +302,7 @@ fun OnlineSearchScreen(
                                             is SongItem -> {
                                                 YouTubeSongMenu(
                                                     song = item,
+                                                    navController = navController,
                                                     onDismiss = {
                                                         menuState.dismiss()
                                                         onDismiss()
@@ -309,6 +313,7 @@ fun OnlineSearchScreen(
                                             is AlbumItem -> {
                                                 YouTubeAlbumMenu(
                                                     albumItem = item,
+                                                    navController = navController,
                                                     onDismiss = {
                                                         menuState.dismiss()
                                                         onDismiss()
@@ -351,6 +356,7 @@ fun OnlineSearchScreen(
                                             is EpisodeItem -> {
                                                 YouTubeSongMenu(
                                                     song = item.asSongItem(),
+                                                    navController = navController,
                                                     onDismiss = {
                                                         menuState.dismiss()
                                                         onDismiss()
@@ -442,6 +448,7 @@ fun OnlineSearchScreen(
                                     is SongItem -> {
                                         YouTubeSongMenu(
                                             song = item,
+                                            navController = navController,
                                             onDismiss = {
                                                 menuState.dismiss()
                                                 onDismiss()
@@ -452,6 +459,7 @@ fun OnlineSearchScreen(
                                     is AlbumItem -> {
                                         YouTubeAlbumMenu(
                                             albumItem = item,
+                                            navController = navController,
                                             onDismiss = {
                                                 menuState.dismiss()
                                                 onDismiss()
@@ -494,6 +502,7 @@ fun OnlineSearchScreen(
                                     is EpisodeItem -> {
                                         YouTubeSongMenu(
                                             song = item.asSongItem(),
+                                            navController = navController,
                                             onDismiss = {
                                                 menuState.dismiss()
                                                 onDismiss()
@@ -572,6 +581,7 @@ fun OnlineSearchScreen(
                                         is SongItem -> {
                                             YouTubeSongMenu(
                                                 song = item,
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()
@@ -582,6 +592,7 @@ fun OnlineSearchScreen(
                                         is AlbumItem -> {
                                             YouTubeAlbumMenu(
                                                 albumItem = item,
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()
@@ -624,6 +635,7 @@ fun OnlineSearchScreen(
                                         is EpisodeItem -> {
                                             YouTubeSongMenu(
                                                 song = item.asSongItem(),
+                                                navController = navController,
                                                 onDismiss = {
                                                     menuState.dismiss()
                                                     onDismiss()

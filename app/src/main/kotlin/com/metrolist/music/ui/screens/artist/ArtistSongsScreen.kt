@@ -140,6 +140,7 @@ fun ArtistSongsScreen(
                                 menuState.show {
                                     SongMenu(
                                         originalSong = song,
+                                        navController = navController,
                                         onDismiss = menuState::dismiss,
                                     )
                                 }
@@ -173,6 +174,7 @@ fun ArtistSongsScreen(
                                     menuState.show {
                                         SongMenu(
                                             originalSong = song,
+                                            navController = navController,
                                             onDismiss = menuState::dismiss,
                                         )
                                     }
