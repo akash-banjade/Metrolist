@@ -362,6 +362,7 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.androidsvg)
     implementation(libs.browser)
 
     implementation(libs.ucrop)
