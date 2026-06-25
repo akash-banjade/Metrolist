@@ -139,7 +139,6 @@ import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.constants.CropAlbumArtKey
-import com.metrolist.music.utils.rememberSvgPainter
 import com.metrolist.music.constants.DarkModeKey
 import com.metrolist.music.constants.HidePlayerThumbnailKey
 import com.metrolist.music.constants.HideStatusBarOnFullscreenKey
@@ -967,7 +966,7 @@ fun BottomSheetPlayer(
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Icon(
-                                        painter = rememberSvgPainter(rawRes = R.raw.small_icon),
+                                        painter = painterResource(R.drawable.small_icon),
                                         contentDescription = null,
                                         modifier =
                                             Modifier

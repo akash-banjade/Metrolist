@@ -43,8 +43,8 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.metrolist.music.utils.rememberSvgPainter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -164,7 +164,7 @@ fun WrappedIntro(onNext: () -> Unit) {
                 enter = fadeIn(animationSpec = tween(FADE_IN_DURATION, delayMillis = ICON_DELAY)) + slideInVertically(animationSpec = tween(SLIDE_IN_DURATION, delayMillis = ICON_DELAY))
             ) {
                 Icon(
-                    painter = rememberSvgPainter(rawRes = R.raw.app_logo),
+                    painter = painterResource(id = R.drawable.app_logo),
                     contentDescription = stringResource(id = R.string.wrapped_logo_content_description),
                     modifier = Modifier.size(100.dp)
                 )
