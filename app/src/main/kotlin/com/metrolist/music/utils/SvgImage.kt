@@ -5,18 +5,16 @@ import android.graphics.Canvas
 import android.graphics.Picture
 import androidx.annotation.RawRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BitmapPainter
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Painter
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import com.caverock.androidsvg.SVG
 
@@ -57,7 +55,7 @@ fun rememberSvgPainter(
 
 /**
  * Load an SVG from a raw resource and render it as an [Image] composable,
- * rasterized at the size given by [modifier] constraints or [defaultRenderSize].
+ * rasterized at the given [renderSize].
  */
 @Composable
 fun SvgImage(
@@ -65,24 +63,15 @@ fun SvgImage(
     contentDescription: String?,
     modifier: Modifier = Modifier,
     tint: Color = Color.Unspecified,
-    defaultRenderSize: IntSize = IntSize(200, 200),
+    renderSize: IntSize = IntSize(200, 200),
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-    val density = LocalDensity.current
-    BoxWithConstraints(modifier = modifier) {
-        val renderSize =
-            if (maxWidth.isFinite() && maxHeight.isFinite()) {
-                IntSize(maxWidth.roundToPx().coerceAtLeast(1), maxHeight.roundToPx().coerceAtLeast(1))
-            } else {
-                defaultRenderSize
-            }
-        val painter = rememberSvgPainter(rawRes = rawRes, renderSize = renderSize)
-        Image(
-            painter = painter,
-            contentDescription = contentDescription,
-            modifier = Modifier.matchParentSize(),
-            colorFilter = if (tint != Color.Unspecified) ColorFilter.tint(tint) else null,
-            contentScale = contentScale,
-        )
-    }
+    val painter = rememberSvgPainter(rawRes = rawRes, renderSize = renderSize)
+    Image(
+        painter = painter,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        colorFilter = if (tint != Color.Unspecified) ColorFilter.tint(tint) else null,
+        contentScale = contentScale,
+    )
 }
